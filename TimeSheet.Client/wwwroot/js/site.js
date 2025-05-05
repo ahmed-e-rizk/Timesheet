@@ -12,8 +12,7 @@
             }));
 
             const nowISO = now.toISOString().slice(0, 16);
-            $('#punchInDateTime').val(nowISO);
-            $('#punchOutDateTime').val(nowISO);
+          
         }
 
         setInterval(updateCurrentTime, 1000);
@@ -171,7 +170,7 @@ function fetchData(pageNumber) {
                 method: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({
-            PunchIn: new Date(punchTime).toISOString() 
+            PunchIn: punchTime 
         }),
                 success: function(response) {
                     fetchData(currentPage);

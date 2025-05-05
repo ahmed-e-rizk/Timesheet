@@ -29,7 +29,7 @@ namespace Timesheet.Api.Controllers
         [HttpPost("PunchIn")]
         public async Task<IActionResult> PunchIn(PunchInDto dto)
         {
-            var response = await _itimesheetAttendanceBLL.SubmitPunchInTime(UserId ?? 0, dto.PunchIn);
+            var response = await _itimesheetAttendanceBLL.SubmitPunchInTime(UserId ?? 0, DateTime.Parse(dto.PunchIn));
 
             return Ok(response);
         }
@@ -37,7 +37,8 @@ namespace Timesheet.Api.Controllers
         [HttpPost("PunchOut")]
         public async Task<IActionResult> PunchOut(PunchOutDto dto)
         {
-            var response = await _itimesheetAttendanceBLL.SubmitPunchOutTime(UserId ?? 0, dto.PunchOut);
+            var response = await _itimesheetAttendanceBLL.SubmitPunchOutTime(UserId ?? 0, DateTime.Parse(dto.PunchOut)
+);
 
             return Ok(response);
         }

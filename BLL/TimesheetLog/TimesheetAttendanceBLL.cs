@@ -85,76 +85,80 @@ namespace Timesheet.BLL.TimesheetLog
         {
 
             var response = new Response<bool>();
+
             try
             {
-                var today = DateTime.UtcNow.Date;
+                var punchInTime = PunchIn ?? DateTime.UtcNow;
+                var punchInDate = DateOnly.FromDateTime(punchInTime);
 
-                var existingLog = await _attendanceLogsRepository.GetAsync(l => l.UserId == userId && l.Date == DateOnly.FromDateTime(today));
-
-                //if null and submit punch in   and PunchIn null if not null update time 
-                if (existingLog != null && PunchIn == null)
-                    return response.CreateResponse(MessageCodes.PunchIn);
+                var existingLog = await _attendanceLogsRepository.GetAsync(
+                    l => l.UserId == userId && l.Date == punchInDate);
 
                 if (existingLog != null)
                 {
+                    if (PunchIn == null)
+                        return response.CreateResponse(MessageCodes.PunchIn); 
 
-                    existingLog.LoginTime = PunchIn;
+                    existingLog.LoginTime = punchInTime;
                     await _unitOfWork.CommitAsync();
                     return response.CreateResponse(true);
-
                 }
+
                 await _attendanceLogsRepository.AddAsync(new AttendanceLogs
                 {
                     UserId = userId,
-                    Date = DateOnly.FromDateTime(today),
-                    LoginTime = PunchIn,
+                    Date = punchInDate,
+                    LoginTime = punchInTime
                 });
+
                 await _unitOfWork.CommitAsync();
-            }catch(Exception ex)
+                return response.CreateResponse(true);
+            }
+            catch (Exception ex)
             {
                 return response.CreateResponse(ex);
-
             }
-            return response.CreateResponse(true);
 
         }
         public  async Task<IResponse<bool>> SubmitPunchOutTime(int userId, DateTime? PunchOut = null)
         {
             var response = new Response<bool>();
+
             try
             {
-                var today = DateTime.UtcNow.Date;
+                var punchOutTime = PunchOut ?? DateTime.UtcNow;
+                var punchOutDate = DateOnly.FromDateTime(punchOutTime);
 
-                var existingLog = await _attendanceLogsRepository.GetAsync(l => l.UserId == userId && l.Date == DateOnly.FromDateTime(today));
-
-                //if null and submit punch out   and Punchout null if not null update time 
-                if (existingLog != null && PunchOut == null)
-                    return response.CreateResponse(MessageCodes.PunchOut);
+                var existingLog = await _attendanceLogsRepository.GetAsync(
+                    l => l.UserId == userId && l.Date == punchOutDate);
 
                 if (existingLog != null)
                 {
+                    if (PunchOut == null)
+                        return response.CreateResponse(MessageCodes.PunchOut);
 
-                    existingLog.LogoutTime = PunchOut;
+                    existingLog.LogoutTime = punchOutTime;
                     await _unitOfWork.CommitAsync();
                     return response.CreateResponse(true);
-
                 }
+
                 await _attendanceLogsRepository.AddAsync(new AttendanceLogs
                 {
                     UserId = userId,
-                    Date = DateOnly.FromDateTime(today),
-                    LogoutTime = PunchOut,
+                    Date = punchOutDate,
+                    LogoutTime = punchOutTime
                 });
+
                 await _unitOfWork.CommitAsync();
-            }catch(Exception ex)
+                return response.CreateResponse(true);
+            }
+            catch (Exception ex)
             {
                 return response.CreateResponse(ex);
-
             }
-            return response.CreateResponse(true);
 
         }
 
-        
+
     }
 }
