@@ -1,0 +1,3 @@
+﻿Scaffold-DbContext "Data Source=(localdb)\ProjectModels;Initial Catalog=Timesheet;Integrated Security=True;Connect Timeout=300;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Entites -Force
+
+// checkin your web deploy settings, but database connection strings (with potential passwords) will be unencrypted
