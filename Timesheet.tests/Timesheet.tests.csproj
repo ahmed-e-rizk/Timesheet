@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Timesheet\Timesheet.Api.csproj" />
+    <ProjectReference Include="..\TimeSheet.Api\Timesheet.Api.csproj" />
   </ItemGroup>
 
   <ItemGroup>
